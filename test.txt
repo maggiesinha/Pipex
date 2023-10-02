@@ -1,0 +1,6 @@
+Makefile
+libft
+main.c
+main.o
+pipex
+test.txt
