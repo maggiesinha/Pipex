@@ -1,6 +1,6 @@
 Makefile
 libft
-main.c
-main.o
+MAGGIE.c
+BLa.o
 pipex
 test.txt

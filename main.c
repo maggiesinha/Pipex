@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/08 11:23:18 by maggie           ###   ########.fr       */
+/*   Updated: 2023/11/08 11:57:15 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*find_cmd_path(char *envp[], char *cmd)
 	return (NULL);
 }
 
-int	executing_commands(char *path, int input_file, int output_file, char *envp[], char *argv[])
+int	executing_command_to_fd(char *path, int input_fd, int output_fd, char *envp[], char *argv[])
 {
 	int	childpid;
 	int	wait_status;
@@ -70,11 +70,11 @@ int	executing_commands(char *path, int input_file, int output_file, char *envp[]
 	cmd[0] = argv[2];
 	cmd[1] = NULL;
 	
-	if (dup2(input_file, STDIN_FILENO) == -1) {
+	if (dup2(input_fd, STDIN_FILENO) == -1) {
         perror("dup2 (input_file)");
         exit(1);
     }
-	if (dup2(output_file, STDOUT_FILENO) == -1) {
+	if (dup2(output_fd, STDOUT_FILENO) == -1) {
         perror("dup2 (output_file)");
         exit(1);
     }
@@ -85,37 +85,43 @@ int	executing_commands(char *path, int input_file, int output_file, char *envp[]
         return 1;
     }
 	if (childpid == 0)
+	{
+		close (input_fd);
+		close(output_fd);
 		execve(path, cmd, envp);
+	}
 	else
 	{
+		close (input_fd);
+		close(output_fd);
 		waitpid(childpid, &wait_status, 0);
-		printf("Parent process runs after fork\n");
 	}
 	return (0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*path;
+	char	*path[2];
 	int		input_file;
 	int		output_file;
-	int		i;
+	int		pipefd[2];
 
-	if (argc < 4)
+	if (argc < 5)
 		return (1);
 	input_file = open(argv[1], O_RDONLY);
 	output_file = open(argv[argc - 1], O_WRONLY);
-	i = 2;
-	while (i < argc - 1)
+	path[0] = find_cmd_path(envp, argv[2]);
+	path[1] = find_cmd_path(envp, argv[3]);
+	if (!(path[0] && path[1]))
 	{
-		path = find_cmd_path(envp, argv[i]);
-		if (!path)
-		{
-			perror(argv[i]);
-			return (1);
-		}
-		executing_commands(path, input_file, output_file, envp, argv);
-		i++;
+		free (path[0]);
+		free (path[1]);
+		perror(argv[2]);
+		return (1);
 	}
-
+	pipe(pipefd);
+	executing_command_to_fd(path[0], input_file, pipefd[1], envp, argv);
+	close(pipefd[1]);
+	executing_command_to_fd(path[1], pipefd[0], output_file, envp, argv);
+	close(pipefd[0]);
 }
