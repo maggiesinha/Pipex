@@ -4,4 +4,4 @@ main.c
 main.o
 pipex
 test.txt
-testing.txt
+Parent process runs after fork
