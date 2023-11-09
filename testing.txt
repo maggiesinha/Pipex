@@ -1,6 +1,1 @@
-Makefile
-libft
-MAGGIE.c
-BLa.o
-pipex
-test.txt
+5
