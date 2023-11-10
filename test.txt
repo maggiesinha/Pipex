@@ -1,6 +1,4 @@
-Makefile
-libft
-MAGGIE.c
-BLa.o
-pipex
-test.txt
+BLaBal
+
+Blaaad
+adksankd

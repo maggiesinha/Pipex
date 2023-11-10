@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/09 13:29:59 by mvalerio         ###   ########.fr       */
+/*   Updated: 2023/11/10 12:10:21 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*find_cmd_path(char *envp[], char *cmd)
 	return (NULL);
 }
 
+// Prints the error message sent to it as an argument and exits the program.
 void	ft_error(char *str)
 {
 	perror(str);
@@ -176,20 +177,30 @@ t_args	*ft_set_arguments(int argc, char *argv[], char *envp[])
 	return (args);
 }
 
-// Executes the commands in the linked list (args), from the
+// Executes the commands in the linked list (args), from the input file to 
+//the output file.
 void	ft_execute_commands(t_args *args, int input_file, int output_file, char *envp[])
 {
 	t_args	*current;
 	int		pipefd[2];
+	int		tempfd;
 
 	pipe(pipefd);
 	current = args->head;
-	executing_command_to_fd(input_file, pipefd[W],current, envp);
+	executing_command_to_fd(input_file, pipefd[W], current, envp);
 	close(pipefd[W]);
 	current = current->next;
+	while (current->next)
+	{
+		tempfd = pipefd[R];
+		pipe(pipefd);
+		executing_command_to_fd(tempfd, pipefd[W], current->next, envp);
+		close(pipefd[W]);
+		close(tempfd);
+		current = current->next;
+	}
 	executing_command_to_fd(pipefd[R], output_file, current, envp);
 	close(pipefd[R]);
-
 }
 
 int	main(int argc, char *argv[], char *envp[])
