@@ -6,52 +6,59 @@
 #    By: maggie <maggie@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/31 17:22:06 by mvalerio          #+#    #+#              #
-#    Updated: 2023/11/18 13:06:21 by maggie           ###   ########.fr        #
+#    Updated: 2023/11/20 11:27:00 by maggie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
+NAME_BONUS = pipex_bonus
+
 CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -g
 
-LIB = libft/libft.a
+LIBFT = libs/libft
 
-SRC = main.c command_path.c
+LIB_A = libs/libft/libft.a
+
+SRC = src/command_path.c src/execution.c
 
 OBJS = $(SRC:.c=.o)
 
-BONUS_SRC = main_bonus.c command_path.c
+MAIN = src/main.c
 
-BONUS_OBJS = $(BONUS_SRC:.c=.o)
+MAIN_OBJS = $(MAIN:.c=.o)
+
+MAIN_BONUS = src/main_bonus.c
+
+MAIN_BONUS_OBJS = $(MAIN_BONUS:.c=.o)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	@make -s -C libft
-	@make -s bonus -C libft
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIB)
+$(NAME): $(OBJS) $(MAIN_OBJS)
+	@make -s -C $(LIBFT)
+	@make -s bonus -C $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME) $(MAIN_OBJS) $(OBJS) $(LIB_A)
 	@echo "Object files created. Pipex is now ready to run!"
 
 clean:
-	@rm -rf $(OBJS)
-	@make -s clean -C libft
+	@rm -rf $(OBJS) $(MAIN_OBJS) $(MAIN_BONUS_OBJS)
+	@make -s clean -C $(LIBFT)
 	@echo "Your object files were deleted."
 
 fclean: clean
-	@rm -rf $(NAME)
-	@make -s fclean -C libft
+	@rm -rf $(NAME) $(NAME_BONUS)
+	@make -s fclean -C $(LIBFT)
 	@echo "Your programs were deleted."
 
 re: fclean all
 
-bonus:
-	make fclean
-	@make -s -C libft
-	@make -s bonus -C libft
-	@$(CC) $(CFLAGS) -o $(NAME) $(BONUS_OBJS) $(LIB)
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJS) $(MAIN_BONUS_OBJS)
+	@$(CC) $(CFLAGS) -o $(NAME_BONUS) $(MAIN_BONUS_OBJS) $(OBJS) $(LIB_A)
 	@echo "Object files created. Pipex (with bonus) is now ready to run!"

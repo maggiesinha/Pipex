@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_strarray.c                                 :+:      :+:    :+:   */
+/*   ft_arrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 10:25:24 by maggie            #+#    #+#             */
-/*   Updated: 2023/10/02 10:30:37 by maggie           ###   ########.fr       */
+/*   Created: 2023/10/02 12:32:01 by maggie            #+#    #+#             */
+/*   Updated: 2023/11/20 10:49:20 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_free_strarray(char **array)
+size_t	ft_arrlen(char **array)
 {
 	size_t	i;
 
 	i = 0;
-	while (array[i])
-	{
-		free (array[i]);
+	while (array && array[i])
 		i++;
-	}
-	free (array);
-	return ;
+	return (i);
 }

@@ -6,11 +6,11 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/18 13:08:49 by maggie           ###   ########.fr       */
+/*   Updated: 2023/11/20 11:22:28 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../libs/pipex.h"
 
 // Looks for the PATH variable in the environment variables and returns all
 //the paths in an array of strings.
@@ -78,7 +78,6 @@ void	ft_invalid_path(t_args *args)
 		current = current->next;
 	}
 }
-
 
 // Adds each new argument to the linked list of commands (args).
 void	ft_add_argument_to_list(t_args *current, t_args *args)

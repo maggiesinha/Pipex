@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 15:39:06 by mvalerio          #+#    #+#             */
-/*   Updated: 2023/10/02 13:12:40 by maggie           ###   ########.fr       */
+/*   Updated: 2023/11/20 10:49:38 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int				ft_printf(const char *string, ...);
 
 // Extras
 
-void	ft_free_strarray(char **array);
-size_t	ft_arrlen(char **array);
+void			ft_free_strarray(char **array);
+size_t			ft_arrlen(char **array);
 
 #endif

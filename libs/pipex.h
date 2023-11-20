@@ -6,17 +6,17 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:39:23 by mvalerio          #+#    #+#             */
-/*   Updated: 2023/11/18 12:44:33 by maggie           ###   ########.fr       */
+/*   Updated: 2023/11/20 11:23:51 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft/libft.h"
+# include "../libs/libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
-# include "libft/libft.h"
+# include "../libs/libft/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>

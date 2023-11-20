@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/18 13:08:43 by maggie           ###   ########.fr       */
+/*   Created: 2023/05/17 20:31:47 by maggie            #+#    #+#             */
+/*   Updated: 2023/11/20 10:49:46 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "pipex.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int	main(int argc, char *argv[], char *envp[])
-{
-	t_args	*args;
-	int		input_file;
-	int		output_file;
+# include <stdlib.h>
+# include <unistd.h>
+# include "../libft.h"
 
-	if (argc < 5)
-		return (1);
-	input_file = open(argv[1], O_RDONLY);
-	output_file = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	args = ft_set_arguments(argc, argv, envp);
-	ft_invalid_path(args);
-	ft_exec_cmds(args, input_file, output_file, envp);
-}
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 4
+# endif
+
+void	ft_empty_buffer(char *buffer, size_t *i);
+char	*ft_strjoin_nl(char *line, char *buffer, size_t *i);
+char	*get_next_line(int fd);
+
+#endif
