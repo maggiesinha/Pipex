@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:29:47 by maggie            #+#    #+#             */
-/*   Updated: 2023/05/24 17:02:10 by mvalerio         ###   ########.fr       */
+/*   Updated: 2023/11/21 12:48:47 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 char	*get_next_line(int fd)
-{	
+{
 	static char		buffer[BUFFER_SIZE + 1];
 	static size_t	i = 0;
 	char			*line;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/20 11:22:42 by maggie           ###   ########.fr       */
+/*   Updated: 2023/11/21 12:42:49 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_free_args(t_args *args)
 	free(args);
 }
 
-// Executes the commands in the linked list (args), from the input file to 
+// Executes the commands in the linked list (args), from the input file to
 //the output file.
 void	ft_exec_cmds(t_args *args, int in_fd, int out_fd, char *envp[])
 {
@@ -91,4 +91,5 @@ void	ft_exec_cmds(t_args *args, int in_fd, int out_fd, char *envp[])
 	}
 	cmd_to_fd(pipefd[R], out_fd, current, envp);
 	close(pipefd[R]);
+	ft_free_args(args);
 }

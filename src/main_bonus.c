@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/20 11:22:45 by maggie           ###   ########.fr       */
+/*   Updated: 2023/11/21 12:49:13 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	main(int argc, char *argv[], char *envp[])
 	int		output_file;
 
 	if (argc < 5)
+	{
+		ft_printf("Error: not enough arguments\n");
 		return (1);
+	}
 	input_file = open(argv[1], O_RDONLY);
 	output_file = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	args = ft_set_arguments(argc, argv, envp);

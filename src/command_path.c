@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/20 11:22:28 by maggie           ###   ########.fr       */
+/*   Updated: 2023/11/21 12:49:03 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	ft_invalid_path(t_args *args)
 	{
 		if (!(current->path))
 		{
-			perror(current->cmd_and_flags[0]);
+			ft_printf("pipex: %s: command not found\n", \
+				current->cmd_and_flags[0]);
 			ft_free_args(args);
 			exit(1);
 		}
@@ -108,6 +109,7 @@ t_args	*ft_set_arguments(int argc, char *argv[], char *envp[])
 	args = malloc(sizeof(t_args));
 	if (!args)
 		return (NULL);
+	args->head = NULL;
 	while (i < argc - 1)
 	{
 		current = malloc(sizeof(t_args));
