@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2023/11/21 12:49:03 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/22 11:26:00 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*find_cmd_path(char *envp[], char *cmd)
 
 // Checks if the path to the command is valid. If not, it frees the linked
 //list (args) and exits the program with an error message.
-void	ft_invalid_path(t_args *args)
+void	ft_invalid_path(t_args *args, int infile, int outfile)
 {
 	t_args	*current;
 
@@ -71,9 +71,11 @@ void	ft_invalid_path(t_args *args)
 	{
 		if (!(current->path))
 		{
-			ft_printf("pipex: %s: command not found\n", \
+			ft_printf("%s: command not found\n", \
 				current->cmd_and_flags[0]);
 			ft_free_args(args);
+			close (infile);
+			close (outfile);
 			exit(1);
 		}
 		current = current->next;

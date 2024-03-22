@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maggie <maggie@student.42.fr>              +#+  +:+       +#+         #
+#    By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/31 17:22:06 by mvalerio          #+#    #+#              #
-#    Updated: 2023/11/20 11:27:00 by maggie           ###   ########.fr        #
+#    Updated: 2024/03/21 12:59:00 by mvalerio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFT = libs/libft
 
 LIB_A = libs/libft/libft.a
 
-SRC = src/command_path.c src/execution.c
+SRC = src/command_path.c src/execution.c src/execution1.c
 
 OBJS = $(SRC:.c=.o)
 
