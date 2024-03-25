@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:39:23 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/03/25 16:11:08 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:42:05 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ typedef struct arguments {
 
 char	**path_list(char *envp[]);
 void	ft_error(char *str);
-int	cmd_to_fd(int input_fd, int output_fd, t_args *arg, char *envp[], int to_close_fd1, int to_close_fd2);
+int		cmd_to_fd(int *in_out_fd, t_args *arg, \
+		char *envp[], int *fds_to_close);
 void	ft_free_args(t_args *args);
 void	ft_invalid_path(t_args *args, int infile, int outfile);
 void	ft_add_argument_to_list(t_args *current, t_args *args);
 t_args	*ft_set_arguments(int argc, char *argv[], char *envp[]);
-t_args *ft_execute_each_cmd(t_args *current, int pipefd[2],char *envp[]);
+t_args	*ft_execute_each_cmd(t_args *current, int pipefd[2], char *envp[]);
 void	ft_exec_cmds(t_args *args, int in_fd, int out_fd, char *envp[]);
 void	ft_add_child_pid(int pid, int *cmd_pids, int *cmd_qty);
 

@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2024/03/25 16:10:18 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:57:45 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,12 @@ void	ft_add_child_pid(int pid, int *cmd_pids, int *cmd_qty)
 }
 
 // Prints the error message sent to it as an argument and exits the program.
-void	ft_error(char *str)
+void	ft_cmd_to_fd_error(int *in_out_fd, int *fds_to_close, char *str)
 {
+	close(in_out_fd[0]);
+	close(in_out_fd[1]);
+	close(fds_to_close[0]);
+	close(fds_to_close[1]);
 	perror(str);
 	exit(1);
 }
@@ -49,44 +53,23 @@ void	ft_error(char *str)
 // Executes the command in the child process. The parent process waits
 // for the child process to finish (waitpid) and then returns, so that the
 // program won't stop after executing the first command.
-int	cmd_to_fd(int input_fd, int output_fd, t_args *arg, char *envp[], int to_close_fd1, int to_close_fd2)
+int	cmd_to_fd(int *in_out_fd, t_args *arg, char *envp[], int *fds_to_close)
 {
 	int		childpid;
 
-	if (dup2(input_fd, STDIN_FILENO) == -1)
-	{
-		close(input_fd);
-		close(output_fd);
-		close(to_close_fd1);
-		close(to_close_fd2);
-		ft_error("dup2 (input_file)");
-	}
-	if (dup2(output_fd, STDOUT_FILENO) == -1)
-	{
-		close(input_fd);
-		close(output_fd);
-		close(to_close_fd1);
-		close(to_close_fd2);
-		ft_error("dup2 (output_file)");
-	}
+	if (dup2(in_out_fd[0], STDIN_FILENO) == -1)
+		ft_cmd_to_fd_error(in_out_fd, fds_to_close, "dup2 (input_file)");
+	if (dup2(in_out_fd[1], STDOUT_FILENO) == -1)
+		ft_cmd_to_fd_error(in_out_fd, fds_to_close, "dup2 (output_file)");
 	childpid = fork();
 	if (childpid == -1)
-	{
-		close(input_fd);
-		close(output_fd);
-		close(to_close_fd1);
-		close(to_close_fd2);
-		ft_error("fork");
-	}
+		ft_cmd_to_fd_error(in_out_fd, fds_to_close, "fork");
 	if (childpid == 0)
-	{
-
 		execve(arg->path, arg->cmd_and_flags, envp);
-	}
 	else
 	{
-		close(input_fd);
-		close(output_fd);
+		close(in_out_fd[0]);
+		close(in_out_fd[1]);
 	}
 	return (childpid);
 }
@@ -109,22 +92,28 @@ void	ft_free_args(t_args *args)
 	free(args);
 }
 
-t_args *ft_execute_each_cmd(t_args *current, int pipefd[2], \
+t_args	*ft_execute_each_cmd(t_args *current, int pipefd[2], \
 	char *envp[])
 {
 	int	tempfd;
+	int	fds_to_close[2];
+	int	in_out_fd[2];
 
 	while (current->next)
 	{
 		tempfd = pipefd[R];
-		//close(pipefd[R]);
-		if (pipe(pipefd) == -1){
+		if (pipe(pipefd) == -1)
+		{
 			close(tempfd);
 			close(pipefd[R]);
 			close(pipefd[W]);
 			exit(1);
 		}
-		cmd_to_fd(tempfd, pipefd[W], current->next, envp, tempfd, pipefd[R]);
+		fds_to_close[0] = tempfd;
+		fds_to_close[1] = pipefd[R];
+		in_out_fd[0] = tempfd;
+		in_out_fd[1] = pipefd[W];
+		cmd_to_fd(in_out_fd, current->next, envp, fds_to_close);
 		close(pipefd[W]);
 		close(tempfd);
 		current = current->next;
