@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2024/03/22 12:45:09 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:00:12 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (output_file == -1)
 	{
 		ft_printf("%s: Outfile open failed.\n", argv[1]);
+		close(input_file);
 		return (1);
 	}
 	args = ft_set_arguments(argc, argv, envp);

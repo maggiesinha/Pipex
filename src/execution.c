@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2024/03/22 12:52:43 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:10:18 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,11 @@ void	ft_free_args(t_args *args)
 	free(args);
 }
 
-int	*ft_execute_each_cmd(t_args *current, int pipefd[2], \
-	char *envp[], int *cmd_qty)
+t_args *ft_execute_each_cmd(t_args *current, int pipefd[2], \
+	char *envp[])
 {
 	int	tempfd;
-	int	*command_pids;
 
-	command_pids = NULL;
 	while (current->next)
 	{
 		tempfd = pipefd[R];
@@ -126,11 +124,10 @@ int	*ft_execute_each_cmd(t_args *current, int pipefd[2], \
 			close(pipefd[W]);
 			exit(1);
 		}
-		ft_add_child_pid(cmd_to_fd(tempfd, pipefd[W], current->next, envp, tempfd, pipefd[R]),
-			command_pids, cmd_qty);
+		cmd_to_fd(tempfd, pipefd[W], current->next, envp, tempfd, pipefd[R]);
 		close(pipefd[W]);
 		close(tempfd);
 		current = current->next;
 	}
-	return (command_pids);
+	return (current);
 }
