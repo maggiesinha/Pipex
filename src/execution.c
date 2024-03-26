@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2024/03/25 16:57:45 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:16:47 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ t_args	*ft_execute_each_cmd(t_args *current, int pipefd[2], \
 		fds_to_close[1] = pipefd[R];
 		in_out_fd[0] = tempfd;
 		in_out_fd[1] = pipefd[W];
-		cmd_to_fd(in_out_fd, current->next, envp, fds_to_close);
+		cmd_to_fd(in_out_fd, current, envp, fds_to_close);
 		close(pipefd[W]);
 		close(tempfd);
 		current = current->next;
