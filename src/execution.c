@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2024/03/26 16:16:47 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:00:17 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,19 @@ int	cmd_to_fd(int *in_out_fd, t_args *arg, char *envp[], int *fds_to_close)
 {
 	int		childpid;
 
-	if (dup2(in_out_fd[0], STDIN_FILENO) == -1)
-		ft_cmd_to_fd_error(in_out_fd, fds_to_close, "dup2 (input_file)");
-	if (dup2(in_out_fd[1], STDOUT_FILENO) == -1)
-		ft_cmd_to_fd_error(in_out_fd, fds_to_close, "dup2 (output_file)");
 	childpid = fork();
 	if (childpid == -1)
 		ft_cmd_to_fd_error(in_out_fd, fds_to_close, "fork");
 	if (childpid == 0)
+	{
+		if (dup2(in_out_fd[0], STDIN_FILENO) == -1)
+			ft_cmd_to_fd_error(in_out_fd, fds_to_close, "dup2 (input_file)");
+		if (dup2(in_out_fd[1], STDOUT_FILENO) == -1)
+			ft_cmd_to_fd_error(in_out_fd, fds_to_close, "dup2 (output_file)");
+		close(fds_to_close[0]);
+		close(fds_to_close[1]);
 		execve(arg->path, arg->cmd_and_flags, envp);
+	}
 	else
 	{
 		close(in_out_fd[0]);
