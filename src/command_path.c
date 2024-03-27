@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:59:53 by maggie            #+#    #+#             */
-/*   Updated: 2024/03/26 23:13:51 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:01:51 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ char	**path_list(char *envp[])
 
 // Finds the path to the command in the PATH variable. If the command is not
 //found, it returns NULL.
-char	*find_cmd_path(char *envp[], char *cmd)
+char	*find_cmd_path(char *envp[], char *cmd, int i)
 {
 	char	**paths;
 	char	*final_path;
-	int		i;
 
+	if (cmd == NULL)
+		return (NULL);
 	final_path = ft_absolute_path(cmd);
 	if (final_path != NULL)
 		return (final_path);
 	cmd = ft_strjoin("/", cmd);
 	paths = path_list(envp);
-	i = 0;
 	while (paths[i])
 	{
 		final_path = ft_strjoin(paths[i], cmd);
@@ -68,25 +68,19 @@ char	*find_cmd_path(char *envp[], char *cmd)
 void	ft_invalid_path(t_args *args)
 {
 	t_args	*current;
-	int		i;
 
-	i = 0;
 	current = args->head;
 	while (current)
 	{
-		if (i)
+		if (!(current->path))
 		{
-			if (!(current->path))
-			{
-				ft_printf("%s: command not found\n", \
-					current->cmd_and_flags[0]);
-				current->skip_command = 1;
-			}
-			else
-				current->skip_command = 0;
+			ft_printf("%s: command not found\n", \
+				current->cmd_and_flags[0]);
+			current->skip_command = 1;
 		}
+		else
+			current->skip_command = 0;
 		current = current->next;
-		i++;
 	}
 }
 
@@ -126,7 +120,7 @@ void	ft_set_arguments(t_args *args, int argc, char *argv[], char *envp[])
 			current->skip_command = 1;
 		current->next = NULL;
 		current->cmd_and_flags = ft_split(argv[i], ' ');
-		current->path = find_cmd_path(envp, current->cmd_and_flags[0]);
+		current->path = find_cmd_path(envp, current->cmd_and_flags[0], 0);
 		current->pid = -5;
 		ft_add_argument_to_list(current, args);
 		i++;

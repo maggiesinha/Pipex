@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:39:23 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/03/27 17:02:55 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:02:13 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ void	ft_pipe_failed(int *pipefd, int tempfd);
 void	ft_end_of_execution(t_args *args, int *pipefd, int *out_fd);
 void	ft_no_outfile(char *argv[], int argc, int input_file, t_args *args);
 char	**ft_error_handling(int argc, char *envp[], int main_or_bonus);
+char	*find_cmd_path(char *envp[], char *cmd, int i);
 
 #endif
